@@ -7,6 +7,9 @@ import connectToDatabase from './database/mongodb.js'
 import errorMiddleware from './middlewares/error.middleware.js'
 
 import { PORT } from './config/env.js';
+import lostItemRouter from './routes/lostItem.routes.js';
+import foundItemRouter from './routes/foundItem.routes.js';
+import claimItemRouter from './routes/claimItem.routes.js';
 
 const app = express();
 
@@ -17,6 +20,9 @@ app.use(cookieParser());
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/lost', lostItemRouter);
+app.use('/api/v1/found', foundItemRouter);
+app.use('/api/v1/claim', claimItemRouter);
 
 app.use(errorMiddleware);
 
