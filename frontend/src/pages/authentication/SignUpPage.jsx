@@ -1,6 +1,7 @@
 import axios from 'axios';
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 // import { User, Mail, Lock } from 'lucide-react';
 
 const SignupPage = () => {
@@ -8,22 +9,35 @@ const SignupPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const { enqueueSnackbar } = useSnackbar();
+  const [isSignUp, setIsSignUp] = useState(false);
+  const navigate =  useNavigate();
   const handleSubmit = async(e) => {
     e.preventDefault();
     // console.log('Signup attempt:', { name, email, password, confirmPassword });
     try {
-
-      if (password === confirmPassword){
+      if (password !== confirmPassword) {
+        enqueueSnackbar("Passwords do not match", { variant: "error" });
+        return;
+      }
         const response = await axios.post('http://localhost:5500/api/v1/auth/signup', {name, email, password,})
         console.log(response.data);
-      }
-      else {
-        console.log("password not matched");        
+        if (response.status === 201){
+          enqueueSnackbar("Account created successfully", {variant : "success"});
+          setIsSignUp(true);
       }
     }catch (error){
-      console.error(error);
-    };
+      enqueueSnackbar("failed to SignUp", {variant : 'error'});
+    }
   };
+  useEffect ( () => {
+      if (isSignUp){
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
+      }
+
+    }, [isSignUp, navigate]);
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-100">

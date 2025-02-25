@@ -2,9 +2,12 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/authentication/LoginPage.jsx';
 import SignupPage from './pages/authentication/SignUpPage.jsx';
+import { SnackbarProvider } from 'notistack';
+
 
 function App() {
   return (
+    <SnackbarProvider maxSnack={1}>
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
@@ -12,6 +15,7 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
       </Routes>
     </Router>
+    </SnackbarProvider>
   );
 }
 
