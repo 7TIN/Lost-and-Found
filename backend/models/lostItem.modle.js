@@ -4,7 +4,7 @@ import Item from './item.modle.js';
 const lostItemSchema = new mongoose.Schema({
     imageUrl : {
         type : String,
-        requred : [true, 'Image is required'],
+        required : [true, 'Image is required'],
     },
 });
 

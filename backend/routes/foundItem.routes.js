@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { createFoundItem, getFoundItems, getFoundItemById, updateFoundItem, deleteFoundItem } from "../controllers/foundItem.controller";
+import { createFoundItem, getFoundItems, getFoundItemById, updateFoundItem, deleteFoundItem } from "../controllers/foundItem.controller.js";
 
 const foundItemRouter = Router();
 

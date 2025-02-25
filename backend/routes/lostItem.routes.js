@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { createLostItem, getLostItems, getLostItemById, updateLostItem, deleteLostItem } from "../controllers/lostItem.controller";
+import { createLostItem, getLostItems, getLostItemById, updateLostItem, deleteLostItem } from "../controllers/lostItem.controller.js";
 
 const lostItemRouter = Router();
 

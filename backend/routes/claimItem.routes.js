@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { createClaimItem, getClaims, getClaimById, updateClaimItem, deleteClaimItem } from "../controllers/claimItem.controller";
+import { createClaimItem, getClaims, getClaimById, updateClaimItem, deleteClaimItem } from "../controllers/claimItem.controller.js";
 
 const claimItemRouter = Router();
 

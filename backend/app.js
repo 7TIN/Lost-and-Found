@@ -1,6 +1,6 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
-
+import cors from "cors";
 import userRouter from './routes/user.routes.js';
 import authRouter from './routes/auth.routes.js';
 import connectToDatabase from './database/mongodb.js'
@@ -12,6 +12,14 @@ import foundItemRouter from './routes/foundItem.routes.js';
 import claimItemRouter from './routes/claimItem.routes.js';
 
 const app = express();
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
