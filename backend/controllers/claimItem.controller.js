@@ -1,4 +1,4 @@
-import ClaimItem from '../models/clamItem.modle.js';
+import ClaimItem from '../models/clamItem.model.js';
 
 // Create a new claim for an item
 export const createClaimItem = async (req, res, next) => {

@@ -1,4 +1,4 @@
-import LostItem from '../models/lostItem.modle.js';
+import LostItem from '../models/lostItem.model.js';
 
 // Create a new lost item
 export const createLostItem = async (req, res, next) => {

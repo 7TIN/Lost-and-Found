@@ -1,5 +1,5 @@
 // controllers/foundItemController.js
-import FoundItem from '../models/foundItem.modle.js';
+import FoundItem from '../models/foundItem.model.js';
 
 // Create a new found item
 export const createFoundItem = async (req, res, next) => {

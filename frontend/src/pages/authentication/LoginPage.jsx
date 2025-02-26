@@ -1,21 +1,34 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 // import { Mail, Lock } from 'lucide-react';
 import axios from 'axios';
+import { useSnackbar } from 'notistack';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const [isLogin, setIsLogin] = useState(false);
+  const {enqueueSnackbar} = useSnackbar();
+  const navigate = useNavigate();
   const handleSubmit = async(e) => {
     e.preventDefault();
     try{
       const response = await axios.post('http://localhost:5500/api/v1/auth/login', {email , password});
       console.log(response.data);
+      if (response.status === 200){
+        enqueueSnackbar("Login Successful", {variant : 'success'});
+        setIsLogin(true);
+      }
 
     }catch (error){
       console.error(error);
+      enqueueSnackbar("Error occured", {variant: 'error'});
     }
   };
+  useEffect ( ()=> {
+    if(isLogin){
+      navigate('/');
+    }
+  })
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-100">
