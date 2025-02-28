@@ -9,10 +9,11 @@ const LoginPage = () => {
   const [isLogin, setIsLogin] = useState(false);
   const {enqueueSnackbar} = useSnackbar();
   const navigate = useNavigate();
+  
   const handleSubmit = async(e) => {
     e.preventDefault();
     try{
-      const response = await axios.post('http://localhost:5500/api/v1/auth/login', {email , password});
+      const response = await axios.post('http://localhost:5500/api/v1/auth/login', {email , password }, {withCredentials: true});
       console.log(response.data);
       if (response.status === 200){
         enqueueSnackbar("Login Successful", {variant : 'success'});
@@ -21,7 +22,7 @@ const LoginPage = () => {
 
     }catch (error){
       console.error(error);
-      enqueueSnackbar("Error occured", {variant: 'error'});
+      enqueueSnackbar("Fill Correct information", {variant: 'error'});
     }
   };
   useEffect ( ()=> {

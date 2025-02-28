@@ -12,6 +12,7 @@ const SignupPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [isSignUp, setIsSignUp] = useState(false);
   const navigate =  useNavigate();
+
   const handleSubmit = async(e) => {
     e.preventDefault();
     // console.log('Signup attempt:', { name, email, password, confirmPassword });
@@ -20,7 +21,7 @@ const SignupPage = () => {
         enqueueSnackbar("Passwords do not match", { variant: "error" });
         return;
       }
-        const response = await axios.post('http://localhost:5500/api/v1/auth/signup', {name, email, password,})
+        const response = await axios.post('http://localhost:5500/api/v1/auth/signup', {name, email, password,}, {withCredentials: true});
         console.log(response.data);
         if (response.status === 201){
           enqueueSnackbar("Account created successfully", {variant : "success"});
@@ -34,7 +35,7 @@ const SignupPage = () => {
       if (isSignUp){
         setTimeout(() => {
           navigate('/login');
-        }, 2000);
+        }, 1000);
       }
 
     }, [isSignUp, navigate]);

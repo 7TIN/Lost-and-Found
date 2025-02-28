@@ -11,6 +11,7 @@ import lostItemRouter from './routes/lostItem.routes.js';
 import foundItemRouter from './routes/foundItem.routes.js';
 import claimItemRouter from './routes/claimItem.routes.js';
 import itemRouter from './routes/item.routes.js';
+import authorize from './middlewares/auth.middleware.js';
 
 const app = express();
 const corsOptions = {
@@ -28,11 +29,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/users', userRouter);
-app.use('/api/v1/lost', lostItemRouter);
-app.use('/api/v1/found', foundItemRouter);
+app.use('/api/v1/users',userRouter);
+app.use('/api/v1/lost',authorize, lostItemRouter);
+app.use('/api/v1/found',authorize, foundItemRouter);
 // app.use('/api/v1/claim', claimItemRouter);
-app.use('/api/v1/items',itemRouter);
+app.use('/api/v1/items',authorize, itemRouter);
 app.use(errorMiddleware);
 
 app.get("/", (req,res)=>{
