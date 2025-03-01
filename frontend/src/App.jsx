@@ -7,6 +7,7 @@ import ItemListPage from './pages/itemsPage.jsx';
 import ReportItemCard from './components/ReportItemCard.jsx';
 import PrivateRoute from './utils/PrivateRouter.jsx';
 import { AuthProvider } from './utils/AuthContext.jsx';
+import HomePage from './pages/HomePage.jsx';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route path ="/report" element={<PrivateRoute> <ReportItemCard/> </PrivateRoute>} />
             <Route path="/items" element= {<PrivateRoute> <ItemListPage/> </PrivateRoute>} />
+            <Route path= "/" element= {<PrivateRoute> <HomePage/> </PrivateRoute>} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
           </Routes>
