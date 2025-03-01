@@ -1,20 +1,23 @@
-import { Navigate, useLocation } from 'react-router-dom';
-import { useContext } from 'react';
-import { AuthContext } from './AuthContext.jsx';
+import { useEffect, useContext } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { AuthContext } from './AuthContext';
 
 const PrivateRoute = ({ children }) => {
-    const { user, loading } = useContext(AuthContext);
+    const navigate = useNavigate();
     const location = useLocation();
+    const { user, loading } = useContext(AuthContext);
+
+    useEffect(() => {
+        if (!loading && !user) {
+            navigate('/login', { state: { from: location }, replace: true });
+        }
+    }, [user, loading, navigate, location]);
 
     if (loading) {
-        return null; // Or display a simple message like "Loading..."
+        return <p>Loading...</p>;
     }
 
-    if (!user) {
-        return <Navigate to="/login" state={{ from: location }} replace />;
-    }
-
-    return children; // Render the protected route
+    return user ? children : null;
 };
 
 export default PrivateRoute;

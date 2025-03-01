@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
-import api from './api.jsx'; // Use your custom api instance
+import api from './api.js';
 
 const AuthContext = createContext();
 
@@ -10,12 +9,13 @@ const AuthProvider = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchUser = async() => {
+        const fetchUser = async () => {
             try {
-                const response = await api.get('/api/v1/users/');
-                setUser(response.data);
+                const response = await api.get('/api/v1/users/me');
+                setUser(response.data); 
             } catch (error) {
-                setError(error.message);
+                setUser(null);
+                setError(error.response?.data?.message || "Failed to fetch user");
             } finally {
                 setLoading(false);
             }

@@ -4,29 +4,26 @@ import User from '../models/user.model.js';
 
 const authorize = async (req, res, next) => {
     try {
-        let token;
+        const token = req.cookies.jwtToken;
 
         // if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         //   token = req.headers.authorization.split(' ')[1];
         // }
-
-        if (req.cookies.jwtToken) {
-            token = req.cookies.jwtToken;
-        }
-
-        if (!token) return res.status(401).json({ message: 'Unauthorized' });
+        if (!token) {
+            return res.status(401).json({success: false, message: 'Unauthorized : no token' });}
 
         const decoded = jwt.verify(token, JWT_SECRET);
 
-        const user = await User.findById(decoded.userId);
+        const user = await User.findById(decoded.userId).select('-password');
 
-        if (!user) return res.status(401).json({ message: 'Unauthorized' });
-
+        if (!user) {
+            return res.status(401).json({success: false, message: 'Unauthorized: user not found' });
+        }
         req.user = user;
 
         next();
     } catch (error) {
-        res.status(401).json({ message: 'Unauthorized', error: error.message });
+        res.status(401).json({success: false,  message: 'Unauthorized', error: error.message });
     }
 };
 

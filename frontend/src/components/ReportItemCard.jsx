@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { enqueueSnackbar, useSnackbar } from "notistack";
-import api from "../utils/api.jsx";
+import api from "../utils/api.js";
 const ReportItemCard = () => {
 
     const navigate = useNavigate();

@@ -34,7 +34,7 @@ export const signUp = async(req, res, next) => {
           httpOnly: true, 
           secure: true, 
           sameSite: 'strict', 
-          maxAge: 3600000 
+          maxAge: 360000,
         });
 
         res.status(201).json({
@@ -43,8 +43,8 @@ export const signUp = async(req, res, next) => {
             data: {
               token,
               user: newUsers[0],
-            }
-          })
+            },
+          });
 
     }catch (error){
         await session.abortTransaction();
@@ -77,10 +77,10 @@ export const signIn = async (req, res, next) => {
       const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
       res.cookie('jwtToken', token, {
-        httpOnly: true, // Prevents JavaScript access
-        secure: true, // Use HTTPS
-        sameSite: 'strict', // Prevents CSRF attacks
-        maxAge: 3600000 // 1 hour
+        httpOnly: true, 
+        secure: true, 
+        sameSite: 'strict',
+        maxAge: 360000,
       });
   
       res.status(200).json({
@@ -98,8 +98,12 @@ export const signIn = async (req, res, next) => {
 
   export const logOut = async (req, res, next) => {
     try {
-        res.clearCookie('jwtToken');
-        res.status(200).json({ message: 'Logged out successfully' });
+        res.clearCookie('jwtToken', {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict"
+        });
+        res.status(200).json({success:true, message: 'Logged out successfully' });
     } catch (error) {
         next(error);
     }

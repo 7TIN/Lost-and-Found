@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ItemCard from './ItemCard.jsx';
-import api from '../utils/api.jsx';
+import api from '../utils/api.js';
 
 const ItemList = () => {
     const [items, setItems] = useState([]);
