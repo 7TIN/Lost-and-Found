@@ -1,9 +1,10 @@
 import { Router } from "express";
 
-import { createClaimRequest } from "../controllers/claimRequest.controller";
+import { createClaimRequest, getClaims } from "../controllers/claimRequest.controller.js";
 
 const claimRequestRouter = Router();
 
-claimRequestRouter.post('/claims', createClaimRequest);
+claimRequestRouter.post('/', createClaimRequest);
+claimRequestRouter.get('/', getClaims);
 
 export default claimRequestRouter;

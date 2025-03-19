@@ -22,7 +22,7 @@ const claimRequestSchema = new mongoose.Schema({
         type: String, 
         required: [true,'Description is required'], 
     },
-    imageUrl : {
+    profImageUrl : {
         type : String,
         required: [true, 'Proof is Required'],
     },
