@@ -3,47 +3,52 @@ import { useEffect, useState } from 'react';
 import ClaimRequest from './ClaimRequestCard';
 import api from '../utils/api';
 
-const ItemCard = ({ item }) => {
+const ItemCard = ({ item}) => {
     // const [imageOpen , setImageOpen] = useState(false);
+    // const [refresh, setRefresh] = useState(false);
     const [open, setOpen] = useState(false);
     const [claimStatus, setClaimStatus] = useState(null);
 
-    useEffect(()=>{
-        const fetchClaims = async () => {
-            try {
-                const response = await api.get(`/api/v1/claim?item=${item._id}`);
-                const claims = response.data.data;
+    const fetchClaims = async () => {
+        try {
+            const response = await api.get(`/api/v1/claim?item=${item._id}`);
+            const claims = response.data.data;
 
-                if (claims.length > 0) {
-                    const approvedClaim = claims.find(claim => claim.status === 'approved');
-                    const pendingClaim = claims.find(claim => claim.status === 'pending');
+            if (claims.length > 0) {
+                const approvedClaim = claims.find(claim => claim.status === 'approved');
+                const pendingClaim = claims.find(claim => claim.status === 'pending');
 
-                    if (approvedClaim){
-                        setClaimStatus('approved');
-                    }else if (pendingClaim){
-                        setClaimStatus('pending');
-                    }else {
-                        setClaimStatus('unclaimed')
-                    }
-            }else {
-                setClaimStatus('unClaimed');
-            }
-        }catch (error){
-            console.log('Error fetching claims:', error);
-            setClaimStatus('unclaimed');
+                if (approvedClaim){
+                    setClaimStatus('approved');
+                }else if (pendingClaim){
+                    setClaimStatus('pending');
+                }else {
+                    setClaimStatus('unclaimed')
+                }
+        }else {
+            setClaimStatus('unClaimed');
         }
-    }; 
-    fetchClaims();
-}, [item._id]);
+    }catch (error){
+        console.log('Error fetching claims:', error);
+        setClaimStatus('unclaimed');
+    }}
+    useEffect(()=>{
+        fetchClaims();
+    }, [item._id]);
+
+// const handleClaimSubmitted = () => {
+//     setOpen(false);
+//     setRefresh(prev => !prev);
+// };
 
     return (
 
 
         <div className=" relative flex flex-col justify-between bg-white shadow-md p-4 w-full max-w-sm border-zinc-700 border shadow-zinc-700 ">
             {claimStatus && (
-                <div onClick={()=> setOpen(true)} className={`absolute top-2 right-2 px-3 py-1 rounded-full text-sm cursor-pointer
+                <div onClick={()=> setOpen(true)} className={`absolute top-2 right-2 px-4 py-1 rounded-full text-sm cursor-pointer
                     ${claimStatus === 'approved' ? 'bg-green-200 text-green-800' : 
-                      claimStatus === 'pending' ? 'bg-yellow-200 text-yellow-800' : 
+                      claimStatus === 'pending' ? 'bg-yellow-200 text-gray-900' : 
                       'bg-gray-200 text-gray-800'}`}>
                     {claimStatus === 'approved' ? 'Claimed' : 
                      claimStatus === 'pending' ? 'Pending Claim' : 
@@ -54,7 +59,23 @@ const ItemCard = ({ item }) => {
             {item.imageUrl && (
                 <img src={item.imageUrl} alt={item.title} className="w-full h-40 shadow mb-4" />
             )}
-            <h2 className="text-lg font-bold mb-2">{item.title}</h2> <p className="text-lg mb-4" >{item.itemType}</p>
+            <h2 className="text-lg font-bold mb-2">{item.title}</h2> 
+
+            <div className={`absolute top-2 left-2 px-4 py-1 rounded-full text-sm 
+            ${item.itemType === 'LostItem' ? 'bg-red-800 text-amber-100' : 
+            item.itemType === 'FoundItem' ? 'bg-emerald-600 text-amber-100' : ''}`}>
+            {item.itemType === 'LostItem' ? 'Lost Item' : item.itemType === 'FoundItem' ? 'Found Item' : ''}
+            </div>
+
+            {/* <div className="flex items-center gap-3 mb-2">
+                <h2 className="text-lg font-bold">{item.title}</h2>
+                <span className={`px-3 py-1 text-sm rounded-full 
+                    ${item.itemType === 'LostItem' ? 'bg-red-800 text-amber-100' : 
+                    item.itemType === 'FoundItem' ? 'bg-emerald-600 text-amber-100' : ''}`}>
+                    {item.itemType === 'LostItem' ? 'Lost Item' : item.itemType === 'FoundItem' ? 'Found Item' : ''}
+                </span>
+            </div> */}
+
             <p className="text-gray-600 mb-4">{item.description}</p>
             <p className="text-gray-600 mb-2">Location: {item.location}</p>
             <p className="text-gray-600 mb-2">Date: {new Date(item.date).toLocaleDateString()}</p>
@@ -71,7 +92,7 @@ const ItemCard = ({ item }) => {
                     </button>
                     <h2 className="text-lg font-bold mb-2">{item.title}</h2> <p></p>
                     <img src={item.imageUrl} alt={item.title} className="w-full h-48 object-cover rounded-md mb-4" />
-                    <ClaimRequest itemId={item._id} />
+                    <ClaimRequest itemId={item._id} onSuccess={() => {fetchClaims(); setOpen(false);}}/>
                     
                 </div>
             </div>

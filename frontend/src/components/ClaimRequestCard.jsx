@@ -1,7 +1,7 @@
 import { useState } from "react";
 import api from "../utils/api";
 
-const ClaimRequest = ({ itemId }) => {
+const ClaimRequest = ({ itemId, onSuccess }) => {
     const [claimantName,setClaimantName] = useState('');
     const [claimantPhone, setClaimantPhone] = useState('');
     const [claimantEmail, setClaimantEmail] = useState('');
@@ -21,8 +21,10 @@ const ClaimRequest = ({ itemId }) => {
                 profImageUrl,
             }
             const response = await api.post('/api/v1/claim', claimItem);
+            
             if (response.status === 201){
                 console.log('successful');
+                onSuccess();
             }
         }catch(error){
             console.error(error);}
